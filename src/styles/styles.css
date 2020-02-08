@@ -5,7 +5,48 @@
 /* .ui.basic.buttons .ui.disabled.button {
     border-color: rgba(34, 36, 38, 0.5);
   } */
-#main-button, #show-raw-buttons {
+#main-button, #show-raw-buttons{
     display: flex;
     justify-content: center;
+    padding: 10px;
 }
+
+#text-field {
+  display: flex;
+  text-align: center;
+  font-size: 25px;
+  flex-direction: column;
+}
+
+#container {
+  padding: 15px;
+}
+
+#main-content {
+  display: flex;
+  flex-direction: row;
+
+}
+
+
+#left-half, #right-half{
+  width: 50%;
+  height: 100vh;
+  overflow: scroll;
+}
+
+@media screen and (max-width: 599px) {
+
+  #left-half, #right-half{
+    width: 100%;
+    height: unset;
+    overflow: visible;
+  }
+
+  #main-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+

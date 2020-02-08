@@ -13,6 +13,7 @@
 <body>
     <a
         href="https://github.com/TrinityTerry/nss-exercise-markdown-converter/blob/master/README.md#markdown-converter">README.md</a>
+
     <div class="ui longer modal">
         <div class="header" id="modal-header">Header</div>
         <div id="modal-text" class="scrolling content">
@@ -20,25 +21,29 @@
         <div class="actions" id="action-buttons"></div>
 
     </div>
-    <div class="ui form">
-        <div class="field">
-            <label>Type out text in markup or type link here</label>
-            <textarea id="markdown-input"></textarea>
+    <div id="main-content">
+        <div id="left-half">
+
+            <div class="ui form">
+                <div class="field" id="text-field">
+                    <p>Type out text in markup or type link here</p>
+                    <textarea id="markdown-input"></textarea>
+                </div>
+            </div>
+            <div id="main-button">
+                <button type="submit" id="submit-btn" class="massive ui button">Show converted text below</button>
+            </div>
+            <div id="show-raw-buttons">
+
+                <button type="submit" id="show-html-btn" class="hideit massive ui button ">Show Raw HTML</button>
+                <button type="submit" id="show-md-btn" class="massive ui button hideit">Show Raw Markup</button>
+            </div>
         </div>
-
+        <div id="right-half">
+            <div id="container">
+            </div>
+        </div>
     </div>
-    <div id="main-button">
-
-        <button type="submit" id="submit-btn" class="massive ui button">Show converted text below</button>
-    </div>
-    <div id="show-raw-buttons">
-
-        <button type="submit" id="show-html-btn" class="hideit massive ui button ">Show Raw HTML</button>
-        <button type="submit" id="show-md-btn" class="massive ui button hideit">Show Raw Markup</button>
-    </div>
-    <div id="container">
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>

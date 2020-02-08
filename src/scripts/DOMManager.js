@@ -35,6 +35,7 @@ const DOMManager = {
         document.getElementById("modal-header").innerHTML = "Welcome To Markdown to HTML Converter";
     },
     renderRaw(rawText, message) {
+
         const modalText = document.getElementById("modal-text")
         modalText.innerHTML = `
         <div class="ui form">
@@ -48,20 +49,21 @@ const DOMManager = {
         document.getElementById("modal-header").innerHTML = message;
         document.getElementById("action-buttons").innerHTML = ` 
 
-       
-        <div id="copy-clipboard" class="blue ui animated button" tabindex="0">
-            <div class="visible content">Copy</div>
-            <div class="hidden content">
-            <i class="clipboard outline icon"></i>
+        <button class="ui basic blue button" id="copy-message">Copied to Clipboard!</button>
+            <div id="copy-clipboard" class="blue ui animated button" tabindex="0">
+                <div class="visible content">Copy</div>
+                <div class="hidden content">
+                <i class="clipboard outline icon"></i>
+                </div>
             </div>
-        </div>
-        <div class="ui green ok inverted button">
-            <i class="checkmark icon"></i>
-            Done
-        </div>
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i>
+                Done
+            </div>`
 
-        
-    `
+        $('#copy-message')
+            .hide();
+
         $('.ui.longer.modal')
             .modal('show');
 

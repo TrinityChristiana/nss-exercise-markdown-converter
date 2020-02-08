@@ -26,30 +26,19 @@ const dataManager = {
         DOMManager.renderRaw(mdText, "Raw Markdown");
     },
     clipboard(modalTextarea) {
+        document.getElementById("copy-clipboard").classList.add("disabled")
         modalTextarea.select();
         modalTextarea.setSelectionRange(0, 99999);
 
         document.execCommand("copy");
-        alert("Raw Text Copied")
 
-        // // console.log(modalTextarea.)
-        // modalTextarea.select();
-        // modalTextarea.setSelectionRange(0, 99999);
+        $('#copy-message')
+            .transition('fly left');
 
-        // document.execCommand("copy");
-        // console.log(`Copied Text: ${modalTextarea.value}`)
+        // document.getElementById("copy-message").innerHTML
 
+        // alert("Raw Text Copied")
 
-
-        // let selection = document.getSelection();
-        // let range = document.createRange();
-        // //  range.selectNodeContents(textarea);
-        // range.selectNode(textarea);
-        // selection.removeAllRanges();
-        // selection.addRange(range);
-
-        // console.log('copy success', document.execCommand('copy'));
-        // selection.removeAllRanges();
 
     }
 
