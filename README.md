@@ -27,18 +27,22 @@ Preview assignment here: https://trinity-md-to-html-converter.netlify.com/
 - If a link was submitted, an option to get the raw markdown text will appear
 
 - User can click copy button on raw text modal to copy raw text to the clipboard
-
+***
 ![](clipboard.png)
 *Copying to Clipboard*
 
+*** 
 ![](markup-text-input.png)
 *Markup Text Input*
 
+***
 ![](markup-url-input.png)
 *Markup URL Input*
 
+***
 ![](rawhtml.png)
 *Raw HTML Modal*
 
+***
 ![](rawmd.png)
 *Raw MD Modal*
