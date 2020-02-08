@@ -28,21 +28,23 @@ Preview assignment here: https://trinity-md-to-html-converter.netlify.com/
 
 - User can click copy button on raw text modal to copy raw text to the clipboard
 ***
+### *Copying to Clipboard*
 ![](clipboard.png)
-*Copying to Clipboard*
+
 
 *** 
+### *Markup Text Input*
 ![](markup-text-input.png)
-*Markup Text Input*
+
 
 ***
+### *Markup URL Input*
 ![](markup-url-input.png)
-*Markup URL Input*
 
 ***
+### *Raw HTML Modal*
 ![](rawhtml.png)
-*Raw HTML Modal*
 
 ***
+### *Raw MD Modal*
 ![](rawmd.png)
-*Raw MD Modal*
