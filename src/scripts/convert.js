@@ -143,6 +143,7 @@ const convert = {
     // Reference-style: 
     // ![alt text][logo]
     // [logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
+
 // TODO: MD-Syntax Highlighting
     // Inline `code` has `back-ticks around` it.
     // ```javascript
@@ -161,11 +162,45 @@ const convert = {
     // ```
 
 // TODO: MD-Tables
+    // Colons can be used to align columns.
+
+    // | Tables        | Are           | Cool  |
+    // | ------------- |:-------------:| -----:|
+    // | col 3 is      | right-aligned | $1600 |
+    // | col 2 is      | centered      |   $12 |
+    // | zebra stripes | are neat      |    $1 |
+
+    // There must be at least 3 dashes separating each header cell.
+    // The outer pipes (|) are optional, and you don't need to make the 
+    // raw Markdown line up prettily. You can also use inline Markdown.
+
+    // Markdown | Less | Pretty
+    // --- | --- | ---
+    // *Still* | `renders` | **nicely**
+    // 1 | 2 | 3
 
 // TODO: MD-Blockquotes
+    // > Blockquotes are very handy in email to emulate reply text.
+    // > This line is part of the same quote.
 // TODO: MD-Inline HTML
-// TODO: MD-Horizontal Rule
+    // Ignore html
+// TODO: MD-Horizontal Rule(line breaks)
+    // Three or more...
+
+    // ---
+
+    // Hyphens
+
+    // ***
+
+    // Asterisks
+
+    // ___
+
+    // Underscores
+
 // TODO: MD-Line Breaks
 // TODO: MD-YouTube Videos
+    // [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
 
 export default convert;
