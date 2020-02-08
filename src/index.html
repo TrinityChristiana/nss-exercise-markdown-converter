@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Markdown to HTML</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+    <div class="ui longer modal">
+        <div class="header" id="modal-header">Header</div>
+        <div id="modal-text" class="scrolling content">
+        </div>
+        <div class="actions" id="action-buttons"></div>
+
+    </div>
+    <div class="ui form">
+        <div class="field">
+            <label>Type out text in markup or type link here</label>
+            <textarea id="markdown-input"></textarea>
+        </div>
+
+    </div>
+    <button type="submit" id="submit-btn" class="massive ui button">Show converted text below</button>
+    <button type="submit" id="show-html-btn" class="hidden massive ui button ">Show Raw HTML</button>
+    <button type="submit" id="show-md-btn" class="massive ui button hidden">Show Raw Markup</button>
+    <div id="container">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+</body>
+
+</html>
