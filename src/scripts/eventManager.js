@@ -40,13 +40,13 @@ const eventManager = {
         const htmlBtn = document.getElementById("show-html-btn");
         const mdBtn = document.getElementById("show-md-btn");
         if (url && document.getElementById("container").innerHTML) {
-            mdBtn.classList.remove("hidden", "disabled")
-            htmlBtn.classList.remove("hidden", "disabled")
+            mdBtn.classList.remove("hideit", "disabled")
+            htmlBtn.classList.remove("hideit", "disabled")
         } else if (document.getElementById("container").innerHTML) {
-            htmlBtn.classList.remove("hidden", "disabled");
+            htmlBtn.classList.remove("hideit", "disabled");
         } else {
-            mdBtn.classList.add("hidden")
-            htmlBtn.classList.add("hidden")
+            mdBtn.classList.add("hideit")
+            htmlBtn.classList.add("hideit")
         }
     },
     htmlBtnEvt(HTML) {

@@ -1,7 +1,11 @@
-.hidden {
-    display: none !important;
+.hideit {
+	display: none !important;
 }
 
 /* .ui.basic.buttons .ui.disabled.button {
     border-color: rgba(34, 36, 38, 0.5);
   } */
+#main-button, #show-raw-buttons {
+    display: flex;
+    justify-content: center;
+}

@@ -11,7 +11,8 @@
 </head>
 
 <body>
-    <a href="https://github.com/TrinityTerry/nss-exercise-markdown-converter/blob/master/README.md#markdown-converter">README.md</a>
+    <a
+        href="https://github.com/TrinityTerry/nss-exercise-markdown-converter/blob/master/README.md#markdown-converter">README.md</a>
     <div class="ui longer modal">
         <div class="header" id="modal-header">Header</div>
         <div id="modal-text" class="scrolling content">
@@ -26,9 +27,15 @@
         </div>
 
     </div>
-    <button type="submit" id="submit-btn" class="massive ui button">Show converted text below</button>
-    <button type="submit" id="show-html-btn" class="hidden massive ui button ">Show Raw HTML</button>
-    <button type="submit" id="show-md-btn" class="massive ui button hidden">Show Raw Markup</button>
+    <div id="main-button">
+
+        <button type="submit" id="submit-btn" class="massive ui button">Show converted text below</button>
+    </div>
+    <div id="show-raw-buttons">
+
+        <button type="submit" id="show-html-btn" class="hideit massive ui button ">Show Raw HTML</button>
+        <button type="submit" id="show-md-btn" class="massive ui button hideit">Show Raw Markup</button>
+    </div>
     <div id="container">
     </div>
 

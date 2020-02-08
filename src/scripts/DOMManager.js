@@ -37,16 +37,24 @@ const DOMManager = {
     renderRaw(rawText, message) {
         const modalText = document.getElementById("modal-text")
         modalText.innerHTML = `
-        <textarea id="modal-textarea" cols="30" rows="10"></textarea>
+        <div class="ui form">
+            <div class="ui field transparent">
+                <textarea readonly="" id="modal-textarea"></textarea>
+            </div>
+        </div>
         `;
         const modalTextarea = document.getElementById("modal-textarea");
         modalTextarea.value = rawText;
         document.getElementById("modal-header").innerHTML = message;
         document.getElementById("action-buttons").innerHTML = ` 
-        <button id="copy-clipboard" class="ui blue labeled icon button">
+
+       
+        <div id="copy-clipboard" class="blue ui animated button" tabindex="0">
+            <div class="visible content">Copy</div>
+            <div class="hidden content">
             <i class="clipboard outline icon"></i>
-            copy
-        </button>
+            </div>
+        </div>
         <div class="ui green ok inverted button">
             <i class="checkmark icon"></i>
             Done
@@ -57,7 +65,7 @@ const DOMManager = {
         $('.ui.longer.modal')
             .modal('show');
 
-            eventManager.copyClipboard(modalTextarea);
+        eventManager.copyClipboard(modalTextarea);
 
 
     }
