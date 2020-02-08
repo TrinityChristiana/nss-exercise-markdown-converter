@@ -28,7 +28,6 @@
 
 }
 
-
 #left-half, #right-half{
   width: 50%;
   height: 100vh;
@@ -50,3 +49,8 @@
 
 }
 
+/* TODO: Change size of buttons */
+/* TODO: Change size of text area font */
+/* TODO: Allow user to change font size */
+/* TODO: Dark mode */
+/* TODO: Look at removing url bar when saved  */
