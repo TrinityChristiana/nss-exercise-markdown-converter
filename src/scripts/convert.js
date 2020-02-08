@@ -98,4 +98,15 @@ const convert = {
     }
 }
 
+// TODO: MD-Emphasis
+// TODO: MD-Links
+// TODO: MD-Images
+// TODO: MD-Syntax Highlighting
+// TODO: MD-Tables
+// TODO: MD-Blockquotes
+// TODO: MD-Inline HTML
+// TODO: MD-Horizontal Rule
+// TODO: MD-Line Breaks
+// TODO: MD-YouTube Videos
+
 export default convert;
