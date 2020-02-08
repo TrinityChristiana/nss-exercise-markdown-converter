@@ -1,6 +1,6 @@
 # Markdown Converter
 
-Created: 02/07/20 | Modified: 02-08-2020 11:23:09
+Created: 02/07/20 | Modified: 02-08-2020 15:49:23
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/192ee738-9381-4ff8-ac44-340e50bc218a/deploy-status)](https://app.netlify.com/sites/trinity-md-to-html-converter/deploys)
 
