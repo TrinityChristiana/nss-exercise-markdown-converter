@@ -11,6 +11,7 @@ const eventManager = {
     },
     submitEvent() {
         document.getElementById("submit-btn").addEventListener("click", () => {
+            DOMManager.loader();
             const input = inputManager.runIt();
 
             if (input[0]) {
@@ -36,7 +37,6 @@ const eventManager = {
         })
     },
     showRaw(url) {
-        console.log(url)
         const htmlBtn = document.getElementById("show-html-btn");
         const mdBtn = document.getElementById("show-md-btn");
         if (url && document.getElementById("container").innerHTML) {
@@ -50,7 +50,6 @@ const eventManager = {
         }
     },
     htmlBtnEvt(HTML) {
-        console.log(HTML)
         document.getElementById("show-html-btn").addEventListener("click", dataManager.getRawHTML);        
     },
     mdBtnEvt(mdText) {

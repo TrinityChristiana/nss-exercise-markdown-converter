@@ -34,6 +34,12 @@
   overflow: scroll;
 }
 
+code {
+  padding: 10px;
+  display: block;
+  background-color: rgb(233, 231, 231);
+}
+
 @media screen and (max-width: 599px) {
 
   #left-half, #right-half{

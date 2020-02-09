@@ -15,6 +15,14 @@ const DOMManager = {
         });
 
     },
+    loader() {
+        document.getElementById("container").innerHTML = `
+        <div class="ui segment">
+            <div class="ui active dimmer">
+                <div class="ui loader"></div>
+            </div>
+        </div>`
+    },
     renderWelcome() {
         // document.getElementById("modal-text").innerHTML = "";
         document.getElementById("modal-text").innerHTML = `
