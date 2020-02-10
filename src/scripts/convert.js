@@ -9,7 +9,7 @@ const convert = {
         return this.createParagraph(uList);
     },
     noEmptyBeginning(array){
-        return array.map(element => element.replace(/(^\s+|\s+$)/g, ''));
+        return array.map(element => element.trim());
     },
     addInline(array) {
         return array.map((line, i) => {
@@ -99,7 +99,8 @@ const convert = {
                 if (counter == 0) {
                     const code = document.createElement("code");
                     while (array[i] !== "```") {
-                        code.innerHTML += `${array[i]} </br>`;
+                        code.innerHTML += `"${array[i]}" </br>`;
+                        console.log(array[i]);
                         counter++;
                         i++;
                     }
@@ -107,7 +108,7 @@ const convert = {
                     return code;
 
                 } else {
-                    counter--
+                    counter--;
                     return undefined;
                 }
 
