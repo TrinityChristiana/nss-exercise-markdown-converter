@@ -99,7 +99,7 @@ const convert = {
                 if (counter == 0) {
                     const code = document.createElement("code");
                     while (array[i] !== "```") {
-                        code.innerHTML += `"${array[i]}" </br>`;
+                        code.innerHTML += `${array[i]} </br>`;
                         console.log(array[i]);
                         counter++;
                         i++;
