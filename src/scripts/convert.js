@@ -2,11 +2,10 @@ let codeCount = 0;
 let counter = 0;
 const convert = {
 	runIt(array) {
-        const noSpace = this.noEmptyBeginning(array);
-        
+		const noSpace = this.noEmptyBeginning(array);
 		const code = this.createsCode(noSpace);
 		const inline = this.addInline(code);
-        const uList = this.addUList(inline);
+		const uList = this.addUList(inline);
 		const oList = this.addOList(uList);
 		return this.createParagraph(oList);
 	},
@@ -15,46 +14,46 @@ const convert = {
 	},
 	addInline(array) {
 		return array.map((line, i) => {
-            let checkedLine = line;
+			let checkedLine = line;
 			if (typeof checkedLine == 'string') {
 				const star =
-                checkedLine.startsWith('*') &&
+					checkedLine.startsWith('*') &&
 					!checkedLine.endsWith('*') &&
 					array[i][1] !== '*'
 						? true
-                        : false;
-                        
-                const containStars = checkedLine.includes('*') ? true : false;
-                
+						: false;
+
+				const containStars = checkedLine.includes('*') ? true : false;
+
 				const dash =
-                checkedLine.startsWith('-') &&
+					checkedLine.startsWith('-') &&
 					!checkedLine.endsWith('-') &&
 					array[i][1] !== '-'
 						? true
 						: false;
 				const plus =
-                checkedLine.startsWith('+') &&
+					checkedLine.startsWith('+') &&
 					!checkedLine.endsWith('+') &&
 					array[i][1] !== '+'
 						? true
-                        : false;
-                        
+						: false;
+
 				if (containStars) {
-                    checkedLine = this.containStars(checkedLine, star)
-                }
+					checkedLine = this.containStars(checkedLine, star);
+				}
 				if (checkedLine.startsWith('#')) {
 					if (codeCount % 2 === 0) {
 						return this.addHeaders(checkedLine);
 					}
 				} else if (dash || plus) {
-                    const lines = dash
-                    ? checkedLine.replace('- ', '')
-                    : plus
-                    ? checkedLine.replace('+ ', '')
-                    : null;
+					const lines = dash
+						? checkedLine.replace('- ', '')
+						: plus
+						? checkedLine.replace('+ ', '')
+						: null;
 					return `<li>${lines}</li>`;
-                }
-                //  else if (emphasis) {
+				}
+				//  else if (emphasis) {
 				// 	return this.addEmphasis(line);
 				// }
 			}
@@ -62,15 +61,73 @@ const convert = {
 		});
 	},
 	containStars(checkedLine, star) {
-        let starLine = checkedLine;
-        if(star){
-            return starLine = `<li>${checkedLine.replace('* ', '')}<li>`
-        } else {
-            return checkedLine;
-        }
-        
+		let starLine = checkedLine;
+		const numStars = checkedLine.replace(/[^*]/g, '').length;
+		if (numStars > 1) {
+			let text = '';
+			for (let i = 0; i < checkedLine.length; i++) {
+				if (checkedLine[i] == '*' && checkedLine[i + 1] === '*') {
+					let dbStarCounter = 0;
+					while (typeof checkedLine[i] !== 'undefined') {
+						if (
+							checkedLine[i] === '*' &&
+							checkedLine[i + 1] === '*'
+						) {
+							dbStarCounter++;
+						}
+						if (
+							dbStarCounter == 2 &&
+							checkedLine[i] === '*' &&
+							checkedLine[i + 1] === '*'
+						) {
+							let j = i - 1;
+							text += `</b> `;
+							while (checkedLine[j] !== '*') {
+								console.log(checkedLine[j]);
+								j--;
+							}
 
-		// return `<em>${line}</em>`;
+							text = (
+								text.slice(0, j + 1) +
+								'<b>' +
+								text.slice(j + 1)
+							)
+								.split('**')
+                                .join('');
+                                
+							if (checkedLine[i] == '*') {
+								text += '';
+                            }
+                            
+							text = text;
+						} else {
+							text += checkedLine[i];
+						}
+						i++;
+					}
+					// console.log(checkedLine[i], checkedLine[i + 1])
+				} else {
+					text += checkedLine[i];
+				}
+				// if(checkedLine[i] == "*" && checkedLine[i + 1] !== "*"){
+				//     console.log(checkedLine[i], checkedLine[i + 1])
+				//     // console.log("instars")
+				//     inSigStars++;
+				// }
+
+				// if(inSigStars % 2 !== 0){
+				//     // console.log(checkedLine[i])
+				// }
+			}
+			console.log(text);
+			return text;
+		}
+
+		if (star) {
+			return (starLine = `<li>${checkedLine.replace('* ', '')}</li>`);
+		} else {
+			return checkedLine;
+		}
 	},
 	addHeaders(line) {
 		const pound =
@@ -88,32 +145,26 @@ const convert = {
 	},
 	addUList(array) {
 		return array.map((line, i, array) => {
-            console.log(line);
 			const uList = document.createElement('ul');
 			const inCode = codeCount % 2 !== 0;
 
 			if (!inCode) {
 				if (typeof line === 'string') {
-					if (typeof array[i - 1] == String) {
-						if (
-							line.startsWith('<li>') &&
-							!array[i - 1].startsWith('<li>')
-						) {
-							while (array[i].startsWith('<li>')) {
-								uList.innerHTML += array[i].replace(
-									array[i][4],
-									''
-								);
-								i++;
-							}
-							return uList;
-						} else if (line.startsWith('<li>')) {
-							return undefined;
+					if (
+						line.startsWith('<li>') &&
+						!array[i - 1].startsWith('<li>')
+					) {
+						while (array[i].startsWith('<li>')) {
+							uList.innerHTML += array[i];
+							i++;
 						}
+						return uList;
+					} else if (line.startsWith('<li>')) {
+						return undefined;
 					}
 				}
-				return line;
 			}
+			return line;
 		});
 	},
 	addOList(array) {
@@ -173,7 +224,7 @@ const convert = {
 		});
 	},
 	createParagraph(array) {
-        array.push('');
+		array.push('');
 
 		return array.map((line, i) => {
 			if (
@@ -186,12 +237,11 @@ const convert = {
 					if (typeof array[i] == 'object') {
 						paragraph.appendChild(array[i]);
 					} else if (array[i] !== undefined) {
-                        paragraph.innerHTML += array[i];
+						paragraph.innerHTML += array[i];
 					}
 					i++;
-                }
+				}
 				if (paragraph.innerHTML !== '') {
-                    
 					return paragraph;
 				}
 			} else {
@@ -206,7 +256,7 @@ const convert = {
 // dots == space
 // 1. First ordered list item <ol>
 // 2. Another item
-// ⋅⋅* Unordered sub-list. 
+// ⋅⋅* Unordered sub-list.
 // 1. Actual numbers don't matter, just that it's a number
 // ⋅⋅1. Ordered sub-list
 // 4. And another item.
@@ -227,22 +277,22 @@ const convert = {
 // Strikethrough uses two tildes. ~~Scratch this.~~ (<del>)
 
 // TODO: MD-Images
-// [I'm an inline-style link](https://www.google.com) 
+// [I'm an inline-style link](https://www.google.com)
 
 // [I'm an inline-style link with title](https://www.google.com "Google's Homepage") title="Google's Homepage"
 
 // [I'm a relative reference to a repository file](../blob/master/LICENSE)
 
-// URLs and URLs in angle brackets will automatically get turned into links. 
-// http://www.example.com or <http://www.example.com> and sometimes 
+// URLs and URLs in angle brackets will automatically get turned into links.
+// http://www.example.com or <http://www.example.com> and sometimes
 // example.com (but not on Github, for example).
 // TODO: MD-Images
 // Here's our logo (hover to see the title text):
 
-// Inline-style: 
+// Inline-style:
 // ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
-// Reference-style: 
+// Reference-style:
 // ![alt text][logo]
 // [logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
 
@@ -259,7 +309,7 @@ const convert = {
 // ```
 
 // ```
-// No language indicated, so no syntax highlighting. 
+// No language indicated, so no syntax highlighting.
 // But let's throw in a <b>tag</b>.
 // ```
 
@@ -273,7 +323,7 @@ const convert = {
 // | zebra stripes | are neat      |    $1 |
 
 // There must be at least 3 dashes separating each header cell.
-// The outer pipes (|) are optional, and you don't need to make the 
+// The outer pipes (|) are optional, and you don't need to make the
 // raw Markdown line up prettily. You can also use inline Markdown.
 
 // Markdown | Less | Pretty
