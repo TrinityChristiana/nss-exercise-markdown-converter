@@ -1,6 +1,6 @@
 import DOMManager from "./DOMManager.js"
 
-const mdLink = "https://gist.githubusercontent.com/askingalot/c0965782b49cf17acc2001dac3bd6d24/raw/07d4afaa8c56c48a1127ece8c3c59abbd9c18add/markdown-to-html.md";
+const mdLink = "https://raw.githubusercontent.com/TrinityTerry/nss-exercise-markdown-converter/master/directions.md";
 
 const dataManager = {
     runIt(url) {
