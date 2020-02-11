@@ -1,153 +1,206 @@
 let codeCount = 0;
 let counter = 0;
 const convert = {
-    runIt(array) {
-        const noSpace = this.noEmptyBeginning(array)
-        const code = this.createsCode(noSpace);
-        const inline = this.addInline(code);
+	runIt(array) {
+        const noSpace = this.noEmptyBeginning(array);
+        
+		const code = this.createsCode(noSpace);
+		const inline = this.addInline(code);
         const uList = this.addUList(inline);
-        return this.createParagraph(uList);
-    },
-    noEmptyBeginning(array){
-        return array.map(element => element.trim());
-    },
-    addInline(array) {
-        return array.map((line, i) => {
-            if (typeof line == "string") {
-                const star = (line.startsWith("*") && !line.endsWith("*") && array[i][1] !== "*") ? true : false;                
-                const dash = (line.startsWith("-") && !line.endsWith("-") && array[i][1] !== "-") ? true : false;
-                const plus = (line.startsWith("+") && !line.endsWith("+") && array[i][1] !== "+") ? true : false;
-                if (line.startsWith("#")) {
-                    if (codeCount % 2 === 0) {
-                        return this.addHeaders(line);
-                    }
-                } else if (star || dash || plus) {
-                    const lines = star ? line.replace("* ", '') : (
-                        dash ? line.replace("- ", "") :(
-                            plus ? line.replace("+ ", "") :
-                            null
-                        )
-                    )
-                    return `<li>${lines}</li>`;
-
+		const oList = this.addOList(uList);
+		return this.createParagraph(oList);
+	},
+	noEmptyBeginning(array) {
+		return array.map(element => element.trim());
+	},
+	addInline(array) {
+		return array.map((line, i) => {
+            let checkedLine = line;
+			if (typeof checkedLine == 'string') {
+				const star =
+                checkedLine.startsWith('*') &&
+					!checkedLine.endsWith('*') &&
+					array[i][1] !== '*'
+						? true
+                        : false;
+                        
+                const containStars = checkedLine.includes('*') ? true : false;
+                
+				const dash =
+                checkedLine.startsWith('-') &&
+					!checkedLine.endsWith('-') &&
+					array[i][1] !== '-'
+						? true
+						: false;
+				const plus =
+                checkedLine.startsWith('+') &&
+					!checkedLine.endsWith('+') &&
+					array[i][1] !== '+'
+						? true
+                        : false;
+                        
+				if (containStars) {
+                    checkedLine = this.containStars(checkedLine, star)
                 }
-            }
-            return line;
-            
-        })
-    },
-    addHeaders(line) {
-        const pound = (line.startsWith("#") && !line.endsWith("#")) ? true : false;    
-        if(pound){
-            const num = line.replace(/[^#]/g, "").length;
-            const newLine = line.replace("#".repeat(num), '');
-            return `<h${num}>${newLine}</h${num}>`;
-
-        }  else {
-            const num = (line.replace(/[^#]/g, "").length / 2);
-            let newLine = line.replace("#".repeat(num), '');
-            newLine = newLine.slice(0, -num);
-            return `<h${num}>${newLine}</h${num}>`;
-        }          
-    },
-    addUList(array) {
-        return array.map((line, i, array) => {
-            const uList = document.createElement("ul");
-            const inCode = codeCount % 2 !== 0;
-
-            if (!inCode) {
-                if (typeof line === "string") {
-                    if (typeof array[i - 1] == String)
-                        if (line.startsWith("<li>") && !array[i - 1].startsWith("<li>")) {
-                            while (array[i].startsWith("<li>")) {
-                                uList.innerHTML += array[i].replace(array[i][4], '');
-                                i++;
-                            }
-                            return uList;
-                        } else if (line.startsWith("<li>")) {
-                        return undefined;
-                    }
+				if (checkedLine.startsWith('#')) {
+					if (codeCount % 2 === 0) {
+						return this.addHeaders(checkedLine);
+					}
+				} else if (dash || plus) {
+                    const lines = dash
+                    ? checkedLine.replace('- ', '')
+                    : plus
+                    ? checkedLine.replace('+ ', '')
+                    : null;
+					return `<li>${lines}</li>`;
                 }
-            }
-            return line;
+                //  else if (emphasis) {
+				// 	return this.addEmphasis(line);
+				// }
+			}
+			return checkedLine;
+		});
+	},
+	containStars(checkedLine, star) {
+        let starLine = checkedLine;
+        if(star){
+            return starLine = `<li>${checkedLine.replace('* ', '')}<li>`
+        } else {
+            return checkedLine;
+        }
+        
 
-        });
-    },
-    addOList(array) {
-        return array.map((line, i, array) => {
-            const uList = document.createElement("ul");
-            if (line.startsWith("<li>") && !array[i - 1].startsWith("<li>")) {
-                while (array[i].startsWith("<li>")) {
-                    uList.innerHTML += array[i].replace(array[i][4], '');
-                    i++;
-                }
-                return uList;
-            } else if (line.startsWith("<li>")) {
-                return undefined;
-            }
-            return line;
-        })
-    },
-    createsCode(array) {
-        return array.map((line, i) => {
-            if (line === "```") {
-                codeCount++;
-            }
-            const inCode = codeCount % 2 !== 0;
+		// return `<em>${line}</em>`;
+	},
+	addHeaders(line) {
+		const pound =
+			line.startsWith('#') && !line.endsWith('#') ? true : false;
+		if (pound) {
+			const num = line.replace(/[^#]/g, '').length;
+			const newLine = line.replace('#'.repeat(num), '');
+			return `<h${num}>${newLine}</h${num}>`;
+		} else {
+			const num = line.replace(/[^#]/g, '').length / 2;
+			let newLine = line.replace('#'.repeat(num), '');
+			newLine = newLine.slice(0, -num);
+			return `<h${num}>${newLine}</h${num}>`;
+		}
+	},
+	addUList(array) {
+		return array.map((line, i, array) => {
+            console.log(line);
+			const uList = document.createElement('ul');
+			const inCode = codeCount % 2 !== 0;
 
-            if (inCode && line !== undefined && line !== "```") {
-                if (counter == 0) {
-                    const code = document.createElement("code");
-                    while (array[i] !== "```") {
-                        code.innerHTML += `${array[i]} </br>`;
-                        console.log(array[i]);
-                        counter++;
-                        i++;
-                    }
-                    counter--;
-                    return code;
+			if (!inCode) {
+				if (typeof line === 'string') {
+					if (typeof array[i - 1] == String) {
+						if (
+							line.startsWith('<li>') &&
+							!array[i - 1].startsWith('<li>')
+						) {
+							while (array[i].startsWith('<li>')) {
+								uList.innerHTML += array[i].replace(
+									array[i][4],
+									''
+								);
+								i++;
+							}
+							return uList;
+						} else if (line.startsWith('<li>')) {
+							return undefined;
+						}
+					}
+				}
+				return line;
+			}
+		});
+	},
+	addOList(array) {
+		return array.map((line, i, array) => {
+			const oList = document.createElement('ol');
+			const inCode = codeCount % 2 !== 0;
 
-                } else {
-                    counter--;
-                    return undefined;
-                }
+			if (!inCode) {
+				if (typeof line === 'string') {
+					// if (typeof array[i - 1] == String) { }
+					if (/^\d/.test(line) && !/^\d/.test(array[i - 1])) {
+						let orderNumber = 1;
+						while (/^\d/.test(array[i])) {
+							oList.innerHTML += `<li>${array[i].replace(
+								`${array[i].match(/^\d/)[0]}.`,
+								''
+							)}</li>`;
+							orderNumber++;
+							i++;
+						}
+						return oList;
+					} else if (/^\d/.test(line)) {
+						return undefined;
+					}
+				}
+			}
+			return line;
+		});
+	},
+	createsCode(array) {
+		return array.map((line, i) => {
+			if (line === '```') {
+				codeCount++;
+			}
 
-            }
+			const inCode = codeCount % 2 !== 0;
 
-            if (line === "```") {
-                return undefined;
-            }
-            return line;
-        });
+			if (inCode && line !== undefined && line !== '```') {
+				if (counter == 0) {
+					const code = document.createElement('code');
+					while (array[i] !== '```') {
+						code.innerHTML += `${array[i]} </br>`;
+						counter++;
+						i++;
+					}
+					counter--;
+					return code;
+				} else {
+					counter--;
+					return undefined;
+				}
+			}
+			if (line === '```') {
+				return undefined;
+			}
+			return line;
+		});
+	},
+	createParagraph(array) {
+        array.push('');
 
-    },
-    createParagraph(array) {
-        array.push("")
-        return array.map((line, i) => {
-
-            if ((line !== "" && line !== undefined) && (array[i - 1] == "" || array[i - 1] == undefined)) {
-                const paragraph = document.createElement("p");
-                while (array[i] !== "") {
-                    if (typeof array[i] == "object") {
-                        paragraph.appendChild(array[i]);
-                    } else if (array[i] !== undefined) {
+		return array.map((line, i) => {
+			if (
+				line !== '' &&
+				line !== undefined &&
+				(array[i - 1] == '' || array[i - 1] == undefined)
+			) {
+				const paragraph = document.createElement('p');
+				while (array[i] !== '') {
+					if (typeof array[i] == 'object') {
+						paragraph.appendChild(array[i]);
+					} else if (array[i] !== undefined) {
                         paragraph.innerHTML += array[i];
-                    }
-                    i++;
+					}
+					i++;
                 }
-                if (paragraph.innerHTML !== "") {
-                    return paragraph;
-                }
-            } else {
-                return undefined;
-            }
-
-            return line;
-        });
-
-
-    }
-}
+				if (paragraph.innerHTML !== '') {
+                    
+					return paragraph;
+				}
+			} else {
+				return undefined;
+			}
+			return line;
+		});
+	}
+};
 
 // TODO: MD-Lists
 // dots == space
