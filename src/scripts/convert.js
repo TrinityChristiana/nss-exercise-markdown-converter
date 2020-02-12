@@ -24,7 +24,9 @@ const convert = {
 						: false;
 
 				const containStars = checkedLine.includes('*') ? true : false;
-
+				const contianUnderscores = checkedLine.includes('_')
+					? true
+					: false;
 				const dash =
 					checkedLine.startsWith('-') &&
 					!checkedLine.endsWith('-') &&
@@ -40,6 +42,10 @@ const convert = {
 
 				if (containStars) {
 					checkedLine = this.containStars(checkedLine, star);
+				}
+
+				if (contianUnderscores) {
+					checkedLine = this.contianUnderscores(checkedLine);
 				}
 				if (checkedLine.startsWith('#')) {
 					if (codeCount % 2 === 0) {
@@ -60,14 +66,57 @@ const convert = {
 			return checkedLine;
 		});
 	},
+	contianUnderscores(checkedLine) {
+		let emText = '';
+		for (let i = 0; i < checkedLine.length; i++) {
+			console.log(checkedLine);
+			if (checkedLine[i] == '_' && checkedLine[i + 1] !== ' ') {
+				let starCounter = 0;
+				while (typeof checkedLine[i] !== 'undefined') {
+					if (checkedLine[i] === '_') {
+						starCounter++;
+					}
+
+					if (starCounter % 2 == 0 && checkedLine[i] === '_') {
+						let j = i - 1;
+						emText += `</em>`;
+
+						while (checkedLine[j] !== '_') {
+							j--;
+						}
+
+						emText = (
+							emText.slice(0, j + 1) +
+							'<em>' +
+							emText.slice(j + 1)
+						)
+							.split('_')
+							.join('');
+
+						if (checkedLine[i] == '_') {
+							emText += '';
+						}
+						emText = emText;
+					} else {
+						emText += checkedLine[i];
+					}
+					i++;
+				}
+			} else {
+				emText += checkedLine[i];
+			}
+		}
+		return emText;
+	},
 	containStars(checkedLine, star) {
 		let starLine = checkedLine;
 		const numStars = checkedLine.replace(/[^*]/g, '').length;
 		if (numStars > 1) {
-			let text = '';
+			let boldText = '';
 			for (let i = 0; i < checkedLine.length; i++) {
-				if (checkedLine[i] == '*' && checkedLine[i + 1] === '*') {
+				if (checkedLine[i] + checkedLine[i + 1] == '**') {
 					let dbStarCounter = 0;
+					let lastStar = 0;
 					while (typeof checkedLine[i] !== 'undefined') {
 						if (
 							checkedLine[i] === '*' &&
@@ -77,76 +126,92 @@ const convert = {
 						}
 
 						if (
-							dbStarCounter == 2 &&
+							dbStarCounter % 2 == 0 &&
 							checkedLine[i] === '*' &&
 							checkedLine[i + 1] === '*'
 						) {
 							let j = i - 1;
-							text += `</b> `;
+							lastStar = j;
+
+							boldText += `</b>`;
 							while (checkedLine[j] !== '*') {
 								j--;
 							}
 
-							text = (
-								text.slice(0, j + 1) +
+							boldText = (
+								boldText.slice(0, j + 1) +
 								'<b>' +
-								text.slice(j + 1)
+								boldText.slice(j + 1)
 							)
 								.split('**')
 								.join('');
-
 							if (checkedLine[i] == '*') {
-								text += '';
+								boldText += '';
 							}
-
-							text = text;
+							boldText = boldText;
 						} else {
-							text += checkedLine[i];
+							boldText += checkedLine[i];
 						}
+
+						// console.log(i)
+						// if (
+						// 	i ==
+						// 	lastStar + 1
+						// 	/* ((checkedLine[i + 1] == undefined) ||
+						// 			(checkedLine[i + 1] == ' ')) */
+						// ) {
+						// 	// } else if(i == lastStar + 1 && checkedLine[i + 1] != "*"){
+						// } else {
+						// }
+						boldText = boldText.replace('>*', '>');
+						// console.log(boldText[lastStar + 1]);
+
 						i++;
 					}
-				} else if (
-					checkedLine[i] == '*' &&
-					checkedLine[i + 1] !== '*'
-				) {
+				} else {
+					boldText += checkedLine[i];
+				}
+			}
+			let emText = '';
+			for (let i = 0; i < boldText.length; i++) {
+				if (boldText[i] == '*' && boldText[i + 1] !== ' ') {
 					let starCounter = 0;
-					while (typeof checkedLine[i] !== 'undefined') {
-						if (i !== 0 && checkedLine[i] === '*') {
+					while (typeof boldText[i] !== 'undefined') {
+						if (boldText[i] === '*') {
 							starCounter++;
 						}
 
-						if (starCounter == 2 && checkedLine[i] === '*') {
+						if (starCounter % 2 == 0 && boldText[i] === '*') {
 							let j = i - 1;
-							text += `</em>`;
-							// console.log(checkedLine[i], checkedLine);
-							while (checkedLine[j] !== '*') {
+							emText += `</em>`;
+
+							while (boldText[j] !== '*') {
 								j--;
 							}
 
-							text = (
-								text.slice(0, j + 1) +
+							emText = (
+								emText.slice(0, j + 1) +
 								'<em>' +
-								text.slice(j + 1)
+								emText.slice(j + 1)
 							)
 								.split('*')
 								.join('');
 
-									if (checkedLine[i] == '*') {
-										text += '';
-									}
-
-									text = text;
-								} else {
-									text += checkedLine[i];
+							if (boldText[i] == '*') {
+								emText += '';
+							}
+							emText = emText;
+						} else {
+							emText += boldText[i];
 						}
 						i++;
 					}
 				} else {
-					text += checkedLine[i];
+					emText += boldText[i];
 				}
 			}
-			console.log(text);
-			return text;
+
+			return emText;
 		}
 
 		if (star) {
