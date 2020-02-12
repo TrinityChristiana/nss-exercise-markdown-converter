@@ -24,9 +24,9 @@ const eventManager = {
                         this.mdBtnEvt(array.join("\n"));
                         this.htmlBtnEvt();
                     })
-            } else {
-                const HTMLArray = convert.runIt(input[1].split("\n"));
-                DOMManager.render(HTMLArray);
+                } else {
+                    const HTMLArray = convert.runIt(input[1].split("\n"));
+                    DOMManager.render(HTMLArray);
                 this.htmlBtnEvt();
             }
             this.showRaw(input[0]);
