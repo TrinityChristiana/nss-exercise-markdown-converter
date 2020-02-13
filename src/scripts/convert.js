@@ -10,23 +10,26 @@ const convert = {
 		return this.createParagraph(oList);
 	},
 	noEmptyBeginning(array) {
-		return array.map(element => element.trim());
+		return array.map(element => {
+			if (element == '') {
+				return undefined;
+			} else if (element !== undefined) {
+				return element.trim();
+			} else {
+				return element;
+			}
+		});
 	},
 	addInline(array) {
 		return array.map((line, i) => {
 			let checkedLine = line;
 			if (typeof checkedLine == 'string') {
-				const star =
-					checkedLine.startsWith('*') &&
-					!checkedLine.endsWith('*') &&
-					array[i][1] !== '*'
-						? true
-						: false;
-
 				const containStars = checkedLine.includes('*') ? true : false;
+
 				const contianUnderscores = checkedLine.includes('_')
 					? true
 					: false;
+
 				const dash =
 					checkedLine.startsWith('-') &&
 					!checkedLine.endsWith('-') &&
@@ -40,6 +43,28 @@ const convert = {
 						? true
 						: false;
 
+				const star =
+					checkedLine.startsWith('*') &&
+					checkedLine[1] == " "
+						? true
+						: false;
+
+				// console.log(checkedLine[1])
+
+				if (star || dash || plus) {
+					console.log(checkedLine);
+					checkedLine = star
+						? checkedLine.replace('* ', '')
+						: dash
+						? checkedLine.replace('- ', '')
+						: plus
+						? checkedLine.replace('+ ', '')
+						: null;
+
+					checkedLine = `<li>${checkedLine}</li>`;
+				}
+
+
 				if (containStars) {
 					checkedLine = this.containStars(checkedLine, star);
 				}
@@ -47,70 +72,65 @@ const convert = {
 				if (contianUnderscores) {
 					checkedLine = this.contianUnderscores(checkedLine);
 				}
-				if (checkedLine.startsWith('#')) {
+
+				if (checkedLine !== undefined && checkedLine.startsWith('#')) {
 					if (codeCount % 2 === 0) {
 						return this.addHeaders(checkedLine);
 					}
-				} else if (dash || plus) {
-					const lines = dash
-						? checkedLine.replace('- ', '')
-						: plus
-						? checkedLine.replace('+ ', '')
-						: null;
-					return `<li>${lines}</li>`;
 				}
-				//  else if (emphasis) {
-				// 	return this.addEmphasis(line);
-				// }
 			}
 			return checkedLine;
 		});
 	},
 	contianUnderscores(checkedLine) {
+		
 		let emText = '';
-		for (let i = 0; i < checkedLine.length; i++) {
-			console.log(checkedLine);
-			if (checkedLine[i] == '_' && checkedLine[i + 1] !== ' ') {
-				let starCounter = 0;
-				while (typeof checkedLine[i] !== 'undefined') {
-					if (checkedLine[i] === '_') {
-						starCounter++;
-					}
-
-					if (starCounter % 2 == 0 && checkedLine[i] === '_') {
-						let j = i - 1;
-						emText += `</em>`;
-
-						while (checkedLine[j] !== '_') {
-							j--;
+		if (checkedLine !== undefined) {
+			for (let i = 0; i < checkedLine.length; i++) {
+				if (checkedLine[i] == '_' && checkedLine[i + 1] !== ' ') {
+					let starCounter = 0;
+					while (typeof checkedLine[i] !== 'undefined') {
+						if (checkedLine[i] === '_') {
+							starCounter++;
 						}
 
-						emText = (
-							emText.slice(0, j + 1) +
-							'<em>' +
-							emText.slice(j + 1)
-						)
-							.split('_')
-							.join('');
+						if (starCounter % 2 == 0 && checkedLine[i] === '_') {
+							let j = i - 1;
+							emText += `</em>`;
 
-						if (checkedLine[i] == '_') {
-							emText += '';
+							while (checkedLine[j] !== '_') {
+								j--;
+							}
+
+							emText = (
+								emText.slice(0, j + 1) +
+								'<em>' +
+								emText.slice(j + 1)
+							)
+								.split('_')
+								.join('');
+
+							if (checkedLine[i] == '_') {
+								emText += '';
+							}
+							emText = emText;
+						} else {
+							emText += checkedLine[i];
 						}
-						emText = emText;
-					} else {
-						emText += checkedLine[i];
+						i++;
 					}
-					i++;
+				} else {
+					emText += checkedLine[i];
 				}
-			} else {
-				emText += checkedLine[i];
 			}
 		}
+
 		return emText;
 	},
 	containStars(checkedLine, star) {
 		let starLine = checkedLine;
 		const numStars = checkedLine.replace(/[^*]/g, '').length;
+		let totalText = '';
 		if (numStars > 1) {
 			let boldText = '';
 			for (let i = 0; i < checkedLine.length; i++) {
@@ -153,28 +173,24 @@ const convert = {
 							boldText += checkedLine[i];
 						}
 
-						// console.log(i)
-						// if (
-						// 	i ==
-						// 	lastStar + 1
-						// 	/* ((checkedLine[i + 1] == undefined) ||
-						// 			(checkedLine[i + 1] == ' ')) */
-						// ) {
-						// 	// } else if(i == lastStar + 1 && checkedLine[i + 1] != "*"){
-						// } else {
-						// }
 						boldText = boldText.replace('>*', '>');
-						// console.log(boldText[lastStar + 1]);
 
 						i++;
 					}
 				} else {
 					boldText += checkedLine[i];
 				}
+				totalText = boldText;
 			}
+
 			let emText = '';
+
 			for (let i = 0; i < boldText.length; i++) {
-				if (boldText[i] == '*' && boldText[i + 1] !== ' ') {
+				if (
+					boldText[i] == '*' &&
+					boldText[i + 1] !== ' ' &&
+					boldText[i + 1] !== '*'
+				) {
 					let starCounter = 0;
 					while (typeof boldText[i] !== 'undefined') {
 						if (boldText[i] === '*') {
@@ -213,12 +229,6 @@ const convert = {
 
 			return emText;
 		}
-
-		if (star) {
-			return (starLine = `<li>${checkedLine.replace('* ', '')}</li>`);
-		} else {
-			return checkedLine;
-		}
 	},
 	addHeaders(line) {
 		const pound =
@@ -241,6 +251,7 @@ const convert = {
 
 			if (!inCode) {
 				if (typeof line === 'string') {
+					console.log(line)
 					if (
 						line.startsWith('<li>') &&
 						!array[i - 1].startsWith('<li>')
@@ -316,7 +327,6 @@ const convert = {
 	},
 	createParagraph(array) {
 		array.push('');
-
 		return array.map((line, i) => {
 			if (
 				line !== '' &&
@@ -324,7 +334,8 @@ const convert = {
 				(array[i - 1] == '' || array[i - 1] == undefined)
 			) {
 				const paragraph = document.createElement('p');
-				while (array[i] !== '') {
+
+				while (array[i] !== undefined) {
 					if (typeof array[i] == 'object') {
 						paragraph.appendChild(array[i]);
 					} else if (array[i] !== undefined) {

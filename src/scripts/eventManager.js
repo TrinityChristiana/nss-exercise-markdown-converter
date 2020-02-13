@@ -17,7 +17,6 @@ const eventManager = {
 				dataManager.runIt(input[1]).then(array => {
 					const HTMLArray = convert.runIt(array);
 					DOMManager.render(HTMLArray);
-					// console.log()
 					this.mdBtnEvt(array.join('\n'));
 					this.htmlBtnEvt();
 				});
@@ -28,11 +27,10 @@ const eventManager = {
 				textArray.forEach((element, i, array) => {
                     arraySpaces.push(element)
                     if (array[i + 1] !== '') {
-                        arraySpaces.push("");
+                        arraySpaces.push(undefined);
 					}
                 });
 
-                console.log(arraySpaces);
 
                 const HTMLArray = convert.runIt(arraySpaces);
                 
