@@ -18,13 +18,16 @@ const dataManager = {
     toArray(data) {
         return data.split("\n");
     },
+    // CR: Why is this method in the dataManager?
     getRawHTML() {
         DOMManager.renderRaw(document.getElementById("container").innerHTML, "Raw HTML");
 
     },
+    // CR: Why is this method in the dataManager?
     getMD(mdText) {
         DOMManager.renderRaw(mdText, "Raw Markdown");
     },
+    // CR: Why is this method in the dataManager?
     clipboard(modalTextarea) {
         document.getElementById("copy-clipboard").classList.add("disabled")
         modalTextarea.select();
