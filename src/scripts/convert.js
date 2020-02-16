@@ -2,6 +2,9 @@ let codeCount = 0;
 let counter = 0;
 const convert = {
 	runIt(array) {
+
+		// CR: This code loops through the entire markdown array a LOT
+
 		const noSpace = this.noEmptyBeginning(array);
 		const code = this.createsCode(noSpace);
 		const inline = this.addInline(code);
@@ -16,6 +19,12 @@ const convert = {
 		return array.map((line, i) => {
 			let checkedLine = line;
 			if (typeof checkedLine == 'string') {
+				/* CR: You don't need the ternary.
+				This is equivalent to the code below
+				const star = checkedLine.startsWith('*') 
+									&& !checkedLine.endsWith('*') 
+									&& array[i][1] !== '*';
+				*/
 				const star =
 					checkedLine.startsWith('*') &&
 					!checkedLine.endsWith('*') &&
@@ -40,6 +49,8 @@ const convert = {
 						? true
 						: false;
 
+				// CR: I thought the purpose of this method was to make list items, but
+				//     this code looks like it's concerned with bold, italics and headers
 				if (containStars) {
 					checkedLine = this.containStars(checkedLine, star);
 				}
@@ -48,6 +59,8 @@ const convert = {
 					checkedLine = this.contianUnderscores(checkedLine);
 				}
 				if (checkedLine.startsWith('#')) {
+
+					// CR: I don't think you'll be in a code block at this point in the program flow
 					if (codeCount % 2 === 0) {
 						return this.addHeaders(checkedLine);
 					}
@@ -109,13 +122,21 @@ const convert = {
 		return emText;
 	},
 	containStars(checkedLine, star) {
+		// CR: starLine is unused
 		let starLine = checkedLine;
 		const numStars = checkedLine.replace(/[^*]/g, '').length;
+
+		// CR: This code has an interesting affect on five stars in a row
+		// 	*****
+		// Produces
+		//  *<b<b>></b<b>
 		if (numStars > 1) {
 			let boldText = '';
 			for (let i = 0; i < checkedLine.length; i++) {
 				if (checkedLine[i] + checkedLine[i + 1] == '**') {
 					let dbStarCounter = 0;
+
+					// CR: lastStart is unused
 					let lastStar = 0;
 					while (typeof checkedLine[i] !== 'undefined') {
 						if (
@@ -163,6 +184,9 @@ const convert = {
 						// 	// } else if(i == lastStar + 1 && checkedLine[i + 1] != "*"){
 						// } else {
 						// }
+
+						// CR: This looks like you found a weird edge case and decided to
+						//       just fix it instead of trying to understand it :)
 						boldText = boldText.replace('>*', '>');
 						// console.log(boldText[lastStar + 1]);
 
@@ -245,6 +269,7 @@ const convert = {
 						line.startsWith('<li>') &&
 						!array[i - 1].startsWith('<li>')
 					) {
+						// CR: As in the "code" method, you're looping over list items twice
 						while (array[i].startsWith('<li>')) {
 							uList.innerHTML += array[i];
 							i++;
@@ -286,14 +311,29 @@ const convert = {
 		});
 	},
 	createsCode(array) {
+		// CR: This method returns an array of strings, undefineds and DOM nodes
+		//     	 It's usually best to be consistent with types.
+		//     This method loops over code blocks twice.
+		//       If you need to skip ahead through an array (as you do in the while loop below)
+		//       it's probably better to just use a traditional for(;;) loop.
+		//       That would also have the advantage of letting the result array be
+		//       a different size than the input array, so you wouldn't need to 
+		//       use undefined for the value of certain elements.
 		return array.map((line, i) => {
 			if (line === '```') {
+				// CR: for a flag that toggles consider something like this:
+				//     inCode = !inCode;
 				codeCount++;
 			}
 
 			const inCode = codeCount % 2 !== 0;
 
+			// CR: Not sure line will ever be undefined here, but if you change
+			//      the order of your calls in runIt(), I guess it could be...
 			if (inCode && line !== undefined && line !== '```') {
+
+				// CR: I _think_ I understand this counter. I don't think you'd need it
+				//       if you weren't making multiple passes over the array.
 				if (counter == 0) {
 					const code = document.createElement('code');
 					while (array[i] !== '```') {

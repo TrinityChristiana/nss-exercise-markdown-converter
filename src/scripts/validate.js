@@ -1,4 +1,6 @@
 const validate = {
+    // CR: This is something... If you haven't see if you can find the
+    //  regex for validating email addresses. It makes this look simple.
     validURL(str) {
         let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name

@@ -11,8 +11,13 @@ const eventManager = {
 	submitEvent() {
 		document.getElementById('submit-btn').addEventListener('click', () => {
 			DOMManager.loader();
+
+			// CR: since you're using an array, yoo could use desstructoring
+			// const [isUrl, input] = inputManager.runIt();
 			const input = inputManager.runIt();
 
+			// CR: This if statement is an opportunity to refactor
+			//  You're largely doing the same thing in each branch of the if.
 			if (input[0]) {
 				dataManager.runIt(input[1]).then(array => {
 					const HTMLArray = convert.runIt(array);
@@ -23,7 +28,10 @@ const eventManager = {
 				});
 			} else {
 
-                const textArray = input[1].split('\n')
+				// CR: Formatting!
+								const textArray = input[1].split('\n')
+								
+								// CR: I don't understand why you are adding blank lines
                 const arraySpaces = []
 				textArray.forEach((element, i, array) => {
                     arraySpaces.push(element)
@@ -45,6 +53,8 @@ const eventManager = {
 	showRaw(url) {
 		const htmlBtn = document.getElementById('show-html-btn');
 		const mdBtn = document.getElementById('show-md-btn');
+
+		// CR: this is pretty hard to follow
 		if (url && document.getElementById('container').innerHTML) {
 			mdBtn.classList.remove('hideit', 'disabled');
 			htmlBtn.classList.remove('hideit', 'disabled');
@@ -69,6 +79,7 @@ const eventManager = {
 		DOMManager.renderWelcome();
 		$('.ui.longer.modal').modal('show');
 	},
+	// CR: I would call this method addCopyClipboardListener, or something like that
 	copyClipboard(modalTextarea) {
 		document
 			.getElementById('copy-clipboard')
